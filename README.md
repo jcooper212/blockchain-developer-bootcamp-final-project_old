@@ -1,22 +1,22 @@
 # blockchain-developer-bootcamp-final-project
-Consensys bootcamp project
+DefiWallie - The Swiss Army knife of DefiWallets
 
-# FlashBots
-We will be building out flashbot smart contract which will arbitrage across 2 exchanges (will be expanded to more in future phases)
-We will use Flashloans to secure capital for the arbitrage
+# DefiWallie
+## Problem Statement
+The current Defi experience can be daunting for a new user. Firstly there is a lot of research, a steep learning curve of various tools and protocals and to top that off they are actually spending really money to experiement. In addition to this, the current wallets have a lot of convenience functions which are missing. This is now improving with the newer generation of wallets as well as other dashboards such as zapper.fi and zerion. If only we had a wallet we could trust - but also provided a simple user experience and useful features baked in.
 
-
-## STRATEGY
-
-The Strategy will be the following:
-1. Borrow a stable coin such as USDC or DAI from a Flashloan contract. Say we borrow 6000 DAI
-2. Find out concurrently prices at 2 exchanges (Say Uniswap and Sushiswap) for the price of a token. Say ETH is priced at 3000 at UNI && ETH is priced at  3200 at Sushiswap
-3. We buy 1 ETH at 3000 @ Uniswap
-4. We sell 1 ETH at 3200 @ Sushiswap
-5. We payback the Flashloan of 3000 DAI & keep the profits of (200 = 3200 - 3000)
-
+## The Solution
+Enter DefiWallie - A smart contract wallet which not only keeps track of your assets but also is built on top of the Compound protocol to automatically generated yield and accrue savings. The wallet will be easy to use with all of the convenience functions that are necessary for a great experience. The idea would be to have a simple wallet - but with all of the convenience functions baked in
 
 ## User interaction
-- The user would enter certain parameters on the screen for the FlashBots
-- The user would then click RUN to start the bot
-- The screen would be refreshed with updates on the Flatbot statistics
+A user would use a DefiWallie Factory contract to create a new wallet
+They could then fund the wallet with various assets
+The assets would automatically earn yield on compound - as well as accrue the COMP governance tokens
+The wallet would also do the most common operations such as
+- Deposit
+- Balance
+- Pay
+- Withdraw
+- Swap
+
+In the second Phase, we would add in more addvanced features such as TWAP Swap as well as integration with other protocols such as Yearn, Rari, TokeMak, Rari
