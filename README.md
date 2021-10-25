@@ -1,5 +1,5 @@
 # blockchain-developer-bootcamp-final-project
-A Wallet protocol to provide a convenient DeFi experience
+DefiWallie - The Swiss Army knife of DefiWallets
 
 # DefiWallie
 ## Problem Statement
