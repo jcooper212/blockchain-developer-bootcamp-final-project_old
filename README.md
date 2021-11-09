@@ -20,3 +20,8 @@ The wallet would also do the most common operations such as
 - Swap
 
 In the second Phase, we would add in more addvanced features such as TWAP Swap as well as integration with other protocols such as Yearn, Rari, TokeMak, Rari
+
+
+Folder Structure
+-eth (solidity files)
+-pages (next pages linked to routing)
