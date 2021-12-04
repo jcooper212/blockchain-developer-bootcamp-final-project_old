@@ -2,6 +2,9 @@ const HDWalletProvider = require('truffle-hdwallet-provider');
 const Web3 = require('web3');
 //const {interface, bytecode } = require('./compile');
 const compiledFactory = require('./eth/build/contracts/DefiWallieFactory.json');
+var abi = JSON.stringify(compiledFactory.abi);
+var bytecode = JSON.stringify(compiledFactory.bytecode);
+
 
 const mnemonic = process.env.ETH_WALLET_MNEMONIC;
 const infura_endpoint = process.env.ETH_INFURA_RINKEBY;
@@ -17,8 +20,8 @@ const deploy = async()=>{
 
   console.log('accts len: ', accounts.length, 'acct: ', accounts[0]);
   console.log(compiledFactory.abi);
-  const result = await new web3.eth.Contract(JSON.parse(compiledFactory.abi))
-  .deploy({data: compiledFactory.bytecode})
+  const result = await new web3.eth.Contract(abi)
+  .deploy({data: bytecode})
   .send({gas: '1000000', from: accounts[0]});
   //console.log(interface);
   console.log('Contract deployed to', result.options.address);
