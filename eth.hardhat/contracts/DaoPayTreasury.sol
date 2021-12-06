@@ -44,7 +44,6 @@ contract DaoPayTreasury {
         listDaoWorkstreams.push(address(newWk));
         listDaoWorkstreamNames.push(_workstreamName);
 
-        //daoToken.approve(address(newWk), supplyDaoToken);
         return address(newWk);
     }
 

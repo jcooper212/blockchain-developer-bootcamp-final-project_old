@@ -20,32 +20,20 @@ class WorkstreamNew extends Component {
   onSubmit = async (event) => {
     event.preventDefault();
     this.setState({loading: true, errorMessage:''});
-    try {
+
     const accounts = await web3.eth.getAccounts();
-    console.log(accounts);
+    console.log("here are the accts " , accounts);
 
     const wkAddr = await factory.methods
     .createDaoWorkstream(this.state.workstreamName, this.state.workstreamOwner)
     .send({from: accounts[0]});
 
-    const tokenAddr = await factory.methods.getDaoToken().call();
-    const daotoken = Daotoken(tokenAddr);
-    await daotoken.methods.approve(this.state.workstreamOwner, web3.utils.toWei('10000000')).send({from: accounts[0]});
-    var bal = await daotoken.methods.transferFrom(accounts[0], this.state.workstreamOwner,web3.utils.toWei('500')).send({from: accounts[0]});
-/***
-    await daotoken.methods.approve(wkAddr, 10).send({from: accounts[0]});
-    var aw = await daotoken.methods.allowance(accounts[0], wkAddr).call();
-    var bal = await daotoken.methods.balanceOf(wkAddr).call();
-    console.log("allowance bal ", aw, bal);
-    var bal = await daotoken.methods.transferFrom(accounts[0], wkAddr,2).send({from: accounts[0]});
-    var bal = await daotoken.methods.balanceOf(wkAddr).call();
-    console.log("trf - allowance bal ", aw, bal);
-**/
 
     Router.pushRoute('/');
-  } catch(err){
+//  } catch(err){
+
       this.setState({errorMessage: err.message});
-  }
+//  }
   this.setState({loading: false});
   };
 

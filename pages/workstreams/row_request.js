@@ -56,11 +56,8 @@ class RequestRow extends Component {
 
           const accounts = await web3.eth.getAccounts();
           const wko = await workstream.methods.getWorkstreamOwner();
-          await workstream.methods.approveRequest(this.props.request.id)
+          await workstream.methods.payRequest(this.props.request.id)
             .send({from:accounts[0]});
-            /**
-    await workstream.methods.payRequest(this.props.request.id)
-          .send({from:accounts[0]}); **/
     } catch(err) {
           this.setState({errorMessagePay: err.message});
       }
