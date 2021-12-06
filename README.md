@@ -11,23 +11,23 @@ DAOPayTreasury specifically deals with the Treasury Payments challenge of DAOs. 
 
 
 ## User interaction
-Main page - Create new workstreams for the DAO
-For each workstream - Anyone can create a new payment request
-Each payment request needs to be approved and then paid.
-It can only be approved by the Workstream Owner - and can be paid by the daoOwner
+- Main page - Create new workstreams for the DAO
+- For each workstream - Anyone can create a new payment request
+- Each payment request needs to be approved and then paid.
+- It can only be approved by the Workstream Owner - and can be paid by the daoOwner
 
 ## contracts
-DAOToken - The native token of the DAO
-DaoPayTreasury - The main DAOPayTreasury governence contract - this also acts as a factory contract to produce new DAOWorkstreams dynamically requested by the daoOwner
-DaoWorkstream - This is a workstream which will hold a list of payment requests for the contributors
+- DAOToken - The native token of the DAO
+- DaoPayTreasury - The main DAOPayTreasury governence contract - this also acts as a factory contract to produce new DAOWorkstreams dynamically requested by the daoOwner
+- DaoWorkstream - This is a workstream which will hold a list of payment requests for the contributors
 
 ## Deployed contract on rinkeby
 0x0E570d2E9c9fFECC7B03aCDCc007Aeb38283935A
 
 ## ENV VARIABLES (REQUIRED to be set prior to running)
-ETH_WALLET_MNEMONIC=...privatekey mnemonic
-ETH_INFURA_RINKEBY=...infura_endpoint
-ETH_P=...privatekey
+- ETH_WALLET_MNEMONIC=...privatekey mnemonic
+- ETH_INFURA_RINKEBY=...infura_endpoint
+- ETH_P=...privatekey
 
 ## Folder Structure
 Here is a list of important folders and their description.
