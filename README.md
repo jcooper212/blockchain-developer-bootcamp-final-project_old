@@ -1,22 +1,42 @@
 # blockchain-developer-bootcamp-final-project
-DefiWallie - The Swiss Army knife of DefiWallets
+DaoPayTreasury - Management of DAO Payments
 
-# DefiWallie
+# DaoPayTreasury
 ## Problem Statement
-The current Defi experience can be daunting for a new user. Firstly there is a lot of research, a steep learning curve of various tools and protocals and to top that off they are actually spending really money to experiement. In addition to this, the current wallets have a lot of convenience functions which are missing. This is now improving with the newer generation of wallets as well as other dashboards such as zapper.fi and zerion. If only we had a wallet we could trust - but also provided a simple user experience and useful features baked in.
+DAOs are in their early phases of development. One of the challenges faced by DAOs is managing their contributor's payments. There are 1000s of individual contributors that make up the DAO. Contributors of the DAO typically work on items for the DAO and then are paid in the native token of the DAO. Currently most DAOs manage this on an adhoc manual basis. This creates reconciliation and transparency issues for the DAO.
 
 ## The Solution
-Enter DefiWallie - A smart contract wallet which not only keeps track of your assets but also is built on top of the Compound protocol to automatically generated yield and accrue savings. The wallet will be easy to use with all of the convenience functions that are necessary for a great experience. The idea would be to have a simple wallet - but with all of the convenience functions baked in
+DaoPayTreasury solves this by creating a workflow for paying DAO contributors.
+DAOPayTreasury specifically deals with the Treasury Payments challenge of DAOs. Most DAOs are governed by underlying workstreams. DAOPayTreasury enables a DAO to create custom workstreams (Business Development, Engineering, Finance, Growth etc). The contributors of a workstream can create a payment request which will then get approved by the workstream lead, and paid by DAO Treasury Owner/Signer.
+
 
 ## User interaction
-A user would use a DefiWallie Factory contract to create a new wallet
-They could then fund the wallet with various assets
-The assets would automatically earn yield on compound - as well as accrue the COMP governance tokens
-The wallet would also do the most common operations such as
-- Deposit
-- Balance
-- Pay
-- Withdraw
-- Swap
+Main page - Create new workstreams for the DAO
+For each workstream - Anyone can create a new payment request
+Each payment request needs to be approved and then paid.
+It can only be approved by the Workstream Owner - and can be paid by the daoOwner
 
-In the second Phase, we would add in more addvanced features such as TWAP Swap as well as integration with other protocols such as Yearn, Rari, TokeMak, Rari
+## contracts
+DAOToken - The native token of the DAO
+DaoPayTreasury - The main DAOPayTreasury governence contract - this also acts as a factory contract to produce new DAOWorkstreams dynamically requested by the daoOwner
+DaoWorkstream - This is a workstream which will hold a list of payment requests for the contributors
+
+## Deployed contract on rinkeby
+0x0E570d2E9c9fFECC7B03aCDCc007Aeb38283935A
+
+## ENV VARIABLES (REQUIRED to be set prior to running)
+ETH_WALLET_MNEMONIC=...privatekey mnemonic
+ETH_INFURA_RINKEBY=...infura_endpoint
+ETH_P=...privatekey
+
+## Folder Structure
+Here is a list of important folders and their description.
+
+| Folder                       | Description                                            |
+|:-----------------------------|:-------------------------------------------------------|
+| `components`                 | Common Header & Layout React components                |
+| `eth`                        | Common files used across the react pages               |
+| `eth.hardhat/contracts`      | Smart contracts                                        |
+| `eth.hardhat/test`           | tests                                                  |
+| `pages`                      | Main React pages                                       |
+| `pages/workstreams`          | Workstream pages                                       |
