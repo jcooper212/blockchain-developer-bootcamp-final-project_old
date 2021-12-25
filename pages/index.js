@@ -16,10 +16,11 @@ class WorkstreamIndex extends Component {
 
     const res = await factory.methods.getDaoTokenOwnerBalance().call();
     const dtokenAddr = res[0];
-    const daoBal = res[1];
-    const accounts = await web3.eth.getAccounts();
+    const factoryAddr = res[1];
+    const daoBal = res[2];
     const dtoken = Daotoken(dtokenAddr);
-    const dOwner = await factory.methods.owner().call();
+
+    //const appr = await dtoken.methods.approve(factoryAddr, daoBal).call();
 
 
     return {workstreams: workstreams,

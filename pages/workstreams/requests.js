@@ -15,11 +15,13 @@ class RequestIndex extends Component {
     const { address } = props.query;
     const workstream = Workstream(address);
     const requestCount = await workstream.methods.getRequestLength().call();
+    const daoBal =  await workstream.methods.balance().call();
     const wkOwner = await workstream.methods.getWorkstreamOwner().call();
     const daoOwner = await workstream.methods.getDaoOwner().call();
-    console.log("wk dao ", wkOwner, daoOwner)
     const tokenAddr = await factory.methods.getDaoToken().call();
     const daotoken = Daotoken(tokenAddr);
+    console.log("wk dao ", wkOwner, daoOwner, tokenAddr, daoBal);
+
 
     const requests = await Promise.all(
       Array(parseInt(requestCount))
@@ -29,7 +31,7 @@ class RequestIndex extends Component {
       })
     );
     //console.log("req ", address, requestCount, requests);
-    return {address, requests, requestCount};
+    return {address, requests, requestCount, daoBal};
   }
 
   renderRow(){
@@ -69,7 +71,7 @@ class RequestIndex extends Component {
             {this.renderRow()}
           </Body>
         </Table>
-        <div> Found {this.props.requestCount}  requests </div>
+        <div> Found {this.props.requestCount}  requests / with DAO Balance {this.props.daoBal} owner </div>
       </Layout>
     );
   }

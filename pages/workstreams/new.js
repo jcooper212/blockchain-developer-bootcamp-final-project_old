@@ -14,27 +14,24 @@ class WorkstreamNew extends Component {
   state = {
     workstreamName: '',
     errorMessage: '',
-    allowance: '',
     loading: false
   };
   onSubmit = async (event) => {
     event.preventDefault();
     this.setState({loading: true, errorMessage:''});
+    try {
+      const accounts = await web3.eth.getAccounts();
+      console.log("here are the accts " , accounts);
 
-    const accounts = await web3.eth.getAccounts();
-    console.log("here are the accts " , accounts);
-
-    const wkAddr = await factory.methods
-    .createDaoWorkstream(this.state.workstreamName, this.state.workstreamOwner)
-    .send({from: accounts[0]});
-
-
-    Router.pushRoute('/');
-//  } catch(err){
+      const wkAddr = await factory.methods
+        .createDaoWorkstream(this.state.workstreamName, this.state.workstreamOwner)
+        .send({from: accounts[0]});
+      Router.pushRoute('/');
+    } catch(err){
 
       this.setState({errorMessage: err.message});
-//  }
-  this.setState({loading: false});
+    }
+    this.setState({loading: false});
   };
 
   render() {
@@ -58,15 +55,6 @@ class WorkstreamNew extends Component {
         labelPosition="right"
         value = {this.state.workstreamOwner}
         onChange={event => this.setState({workstreamOwner: event.target.value})}
-         />
-        </Form.Field>
-        <Form.Field>
-        <label>Workstream Allowance</label>
-        <Input
-        label="DAOT"
-        labelPosition="right"
-        value = {this.state.allowance}
-        onChange={event => this.setState({allowance: event.target.value})}
          />
         </Form.Field>
 

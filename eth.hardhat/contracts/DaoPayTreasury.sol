@@ -1,7 +1,7 @@
 pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
-//import "hardhat/console.sol";
+import "hardhat/console.sol";
 
 
 
@@ -27,6 +27,11 @@ contract DaoPayTreasury {
     address [] public listDaoWorkstreams;
     string  [] public listDaoWorkstreamNames;
 
+    //Events
+    event NewWorkstream(string str);
+    event PaidContributor(address rcp, uint amount);
+
+    //modifiers
     modifier restricted(){
         require(msg.sender == owner,'only admin');
         _;
@@ -43,7 +48,7 @@ contract DaoPayTreasury {
         DaoWorkstream newWk = new DaoWorkstream(_workstreamName, owner, _workstreamOwner, payable(address(daoToken)));
         listDaoWorkstreams.push(address(newWk));
         listDaoWorkstreamNames.push(_workstreamName);
-
+        emit NewWorkstream(_workstreamName);
         return address(newWk);
     }
 
@@ -56,12 +61,21 @@ contract DaoPayTreasury {
     function getDaoToken()  external view returns (address){
         return (address(daoToken));
     }
-    function getDaoTokenOwnerBalance()  external view returns (address, uint){
-        return (address(daoToken), daoToken.balanceOf(owner));
+    function getDaoTokenOwnerBalance()  external view returns (address, address, uint){
+        return (address(daoToken), address(this), daoToken.balanceOf(owner));
     }
 
-    function payContributor(address payable to, uint amount) external payable {
-      to.transfer(amount);
+    function payContributor(address payable to, uint amount) restricted() external  {
+      bool sent = daoToken.transferFrom(owner, to, amount);
+      require(sent, "Token transfer failed");
+      emit PaidContributor(to, amount);
+    }
+    function payContributorRequest(address workstreamAddr, uint index) restricted() external  {
+      DaoWorkstream dw = DaoWorkstream(workstreamAddr);
+      bool sent = daoToken.transferFrom(owner, dw.getRequestRecipient(index), dw.getRequestValue(index));
+      require(sent, "Token transfer failed");
+      dw.payRequest(index);
+      emit PaidContributor(dw.getRequestRecipient(index), dw.getRequestValue(index));
     }
 }
 
@@ -85,14 +99,17 @@ contract DaoWorkstream {
     uint public pendingBalance;
     uint public pendingRequestCount;
 
+    //Events
+    event NewRequest(string str, uint value);
+    event ApprovedRequest(string str, uint value);
+    event PaidRequest(string str, uint value);
+
+    //Modifiers
     modifier restricted(){
         require(msg.sender == daoOwner,'only dao owner');
         _;
     }
-    modifier owner(){
-      require(msg.sender == workstreamOwner, 'only workstream owner');
-      _;
-    }
+
     modifier isApproved(bool _approved){
       require(_approved == true, 'NOT approved');
       _;
@@ -116,7 +133,7 @@ contract DaoWorkstream {
       return workstreamName;
     }
 
-    function execPayment(address payable to, uint amount) restricted() public payable
+    function execPayment(address payable to, uint amount)  public
     {
         IERC20(daoToken).transferFrom(daoOwner, to, amount);
     }
@@ -136,6 +153,12 @@ contract DaoWorkstream {
     function getRequestLength() external view returns (uint){
       return(requests.length);
     }
+    function getRequestRecipient(uint i) external  view returns (address){
+      return (requests[i].recipient);
+    }
+    function getRequestValue(uint i) external  view returns (uint){
+      return (requests[i].value);
+    }
     function createRequest(string memory description, uint value, address payable recipient) public  {
         Request memory newReq = Request({
            id: requests.length,
@@ -149,6 +172,7 @@ contract DaoWorkstream {
         pendingBalance += value;
         pendingRequestCount += 1;
         requests.push(newReq);
+        emit NewRequest(description, value);
     }
     function approveRequest(uint index) restricted() external {
         requests[index].approved = true;
@@ -156,12 +180,16 @@ contract DaoWorkstream {
         //Upon success
         //pendingBalance -= requests[index].value;
         pendingRequestCount -= 1;
+        emit ApprovedRequest(requests[index].description, requests[index].value);
+
     }
-    function payRequest(uint index) restricted() isApproved(requests[index].approved) external {
+    function payRequest(uint index) isApproved(requests[index].approved) external returns (bool){
         requests[index].paid = true;
         //pay the recipeient
-        execPayment(requests[index].recipient, requests[index].value);
+        //execPayment(requests[index].recipient, requests[index].value);
         //Upon success
         pendingBalance -= requests[index].value;
+        emit PaidRequest(requests[index].description, requests[index].value);
+        return true;
     }
 }

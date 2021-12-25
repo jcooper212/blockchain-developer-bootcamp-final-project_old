@@ -26,9 +26,7 @@ class RequestNew extends Component {
     this.setState({loading: true, errorMessage: ''})
     try {
       const accounts = await web3.eth.getAccounts();
-      await workstream.methods.createRequest(description,
-        web3.utils.toWei(value,'ether'),
-        recipient)
+      await workstream.methods.createRequest(description,value,recipient)
         .send({from:accounts[0]});
       Router.pushRoute(`/workstreams/${this.props.address}/requests`)
     } catch(err) {

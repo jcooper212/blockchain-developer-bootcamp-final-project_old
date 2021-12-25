@@ -1,5 +1,10 @@
 const hre = require("hardhat");
 
+var fs = require('fs');
+
+
+
+
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
   // line interface.
@@ -14,7 +19,20 @@ async function main() {
 
   await dpt.deployed();
 
+  let fileLoc = process.env.DAOPAYTREASURY_ROOT;
+  fileLoc += '/DAOPAYTREASURY_ContractAddress';
   console.log("DaoPayTreasury deployed to:", dpt.address);
+
+
+  fs.writeFileSync(fileLoc, Buffer(dpt.address), function(err) {
+      if(err) {
+          return console.log(err);
+      }
+  });
+  console.log("DaoPayTreasury written to:", fileLoc);
+
+
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -35,7 +35,7 @@ module.exports = {
       forking: {
         url: infura_endpoint
       },
-      gasPrice: 0,
+      gasPrice: 10*10000000000,
       initialBaseFeePerGas: 0,
       loggingEnabled: false,
       accounts: {
@@ -45,6 +45,7 @@ module.exports = {
     },
     rinkeby: {
       url: infura_endpoint,
+      gasPrice: 80000000000,
       accounts: {
         mnemonic: dev_mnemonic
       }

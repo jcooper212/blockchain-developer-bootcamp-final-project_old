@@ -3,9 +3,10 @@ const { ethers } = require("hardhat");
 
 
 
-var factoryAddr = '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
-var toAddr = '0xe495cC8F3e4414319f09c770D0a1A43D8Ae4801f';
-var ownerAddr = '0xA1cAd9f755E3fbD16cDcd13bA362905c3390E4B0';
+var factoryAddr = process.env.DAOPAYTREASURY;
+var toAddr = process.env.ETH_W2;
+var ownerAddr = process.env.ETH_W1;
+
 
 let DaoPayTreasury;
 let wkStreamAddr, engAddr;
@@ -47,6 +48,8 @@ describe("DaoPayTreasury", function () {
     expect(await dtoken.allowance(ownerAddr, wkStreamAddr)).to.equal("1000");
     daoBal = await dtoken.approve(engAddr,1000);
     expect(await dtoken.allowance(ownerAddr, engAddr)).to.equal("1000");
+    daoBal = await dtoken.approve(factoryAddr,1000);
+    expect(await dtoken.allowance(ownerAddr, factoryAddr)).to.equal("1000");
   });
 
   it("Validate 2 workstreams", async function () {
@@ -108,9 +111,11 @@ describe("DaoPayTreasury", function () {
   it("Approve and pay requests - bizdev", async function () {
     res = await dw.approveRequest(0);
     res = await dw.payRequest(0);
+    //expect(res[0]).to.equal("true");
     res = await dw.getRequest(0);
     id = res[0].toString(); description = res[1].toString(); recipient = res[2].toString();
     value = res[3].toString(); approved = res[4].toString(); paid = res[4].toString();
+    dpTreasury.payContributor(recipient, value);
     expect(approved).to.equal("true");
     expect(paid).to.equal("true");
     daoBal = await dtoken.balanceOf(ownerAddr);

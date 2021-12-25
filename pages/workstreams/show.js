@@ -48,13 +48,13 @@ class WorkstreamShow extends Component {
     const items_balances = [
       {
         meta: 'Total Balance',
-        header: web3.utils.fromWei(totalBalance, 'ether'),
+        header: totalBalance,
         description: 'Total Balance of payment requests',
         style: {overflowWrap: 'break-word'}
       },
       {
         meta: 'Outstanding Balance',
-        header: web3.utils.fromWei(pendingBalance, 'ether'),
+        header: pendingBalance,
         description: 'Outstanding Balance of payment requests',
         style: {overflowWrap: 'break-word'}
       }];
@@ -69,7 +69,7 @@ class WorkstreamShow extends Component {
       {
         meta: 'Outstanding Request',
         header: pendingRequestCount,
-        description: 'Outstanding number of payment requests',
+        description: 'Outstanding number of approvals',
         style: {overflowWrap: 'break-word'}
       }
     ];
